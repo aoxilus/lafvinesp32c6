@@ -1,0 +1,15 @@
+.pio/
+.pioenvs/
+.clang_complete
+.ccls
+.cache/
+compile_commands.json
+*.elf
+*.bin
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.env
+.env.*
+!.env.example
