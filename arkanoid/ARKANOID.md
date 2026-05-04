@@ -11,6 +11,13 @@
 #define TFT_BL    22
 #define BOOT_BTN  9
 
+// Cristal util ~172x320 (doc LAFVIN). Chip ST7789: RAM horizontal tipica 240; si dibujas "ancho 240" el vidrio solo muestra ~172px -> cortas columnas 1 y 5 a la mitad.
+#define TFT_RAM_W 240
+#define DISP_W    172
+#define DISP_H    320
+#define TFT_OFFSET_X ((TFT_RAM_W - DISP_W) / 2)  // 34: centrar ventana visible en la RAM (ajusta +/-2 si ves franja)
+#define TFT_OFFSET_Y 0
+
 class LGFX : public lgfx::LGFX_Device {
   lgfx::Panel_ST7789  _panel_instance;
   lgfx::Bus_SPI       _bus_instance;
@@ -26,14 +33,15 @@ public:
     _bus_instance.config(bus_cfg);
     _panel_instance.setBus(&_bus_instance);
 
-    // Pantalla 172x320: loncha fina de aguacate en vertical (no la voltees como torta).
     auto panel_cfg = _panel_instance.config();
     panel_cfg.pin_cs     = TFT_CS;
     panel_cfg.pin_rst    = TFT_RST;
-    panel_cfg.memory_width  = 172;
-    panel_cfg.memory_height = 320;
-    panel_cfg.panel_width   = 172;
-    panel_cfg.panel_height  = 320;
+    panel_cfg.memory_width  = TFT_RAM_W;
+    panel_cfg.memory_height = DISP_H;
+    panel_cfg.panel_width   = DISP_W;
+    panel_cfg.panel_height  = DISP_H;
+    panel_cfg.offset_x     = TFT_OFFSET_X;
+    panel_cfg.offset_y     = TFT_OFFSET_Y;
     panel_cfg.offset_rotation = 0;
     panel_cfg.dummy_read_pixel = 8;
     panel_cfg.dummy_read_bits  = 8;
@@ -57,8 +65,8 @@ static const uint16_t palette[] = {
 };
 static const int paletteN = sizeof(palette) / sizeof(palette[0]);
 
-int W = 172;
-int H = 320;
+int W = DISP_W;
+int H = DISP_H;
 
 int paddleX = 0;
 const int paddleW = 40;
@@ -83,6 +91,9 @@ void nextBallColor() {
 void layoutPlayfield() {
   W = tft.width();
   H = tft.height();
+  // Si el driver devolviera ancho de RAM (240), el layout ocuparia mas que el cristal y cortaria los lados.
+  if (W > DISP_W) W = DISP_W;
+  if (H > DISP_H) H = DISP_H;
 
   marginX = 4;
   topY = 8;
@@ -194,11 +205,14 @@ void loop() {
       if (!bricks[r][c]) continue;
       int bx = marginX + c * (brickW + gap);
       int by = topY + r * (brickH + gap);
-      if (bx + brickW > W) continue;
-      if (by + brickH > H) continue;
+      int bw = brickW;
+      int bh = brickH;
+      if (bx + bw > W) bw = W - bx;
+      if (by + bh > H) bh = H - by;
+      if (bw <= 0 || bh <= 0) continue;
 
-      if (ballX + ballR > bx && ballX - ballR < bx + brickW &&
-          ballY + ballR > by && ballY - ballR < by + brickH) {
+      if (ballX + ballR > bx && ballX - ballR < bx + bw &&
+          ballY + ballR > by && ballY - ballR < by + bh) {
         bricks[r][c] = false;  // ¡Splat! Ese aguacate ya es dip.
         ballDY = -ballDY;
         nextBallColor();
