@@ -27,11 +27,11 @@ while ($run) {
 
     # Check for ESP32 USB devices specifically
     Write-Host "`n→ USB Devices with ESP32 signatures:" -ForegroundColor Green
-    $espDevices = Get-PnpDevice | Where-Object { 
-        $_.InstanceId -match "VID_303A|ESP|JTAG|Serial.*Debug" -or 
+    $espDevices = Get-PnpDevice | Where-Object {
+        $_.InstanceId -match "VID_303A|ESP|JTAG|Serial.*Debug" -or
         $_.FriendlyName -match "ESP|JTAG|Serial.*Debug"
     } | Select-Object FriendlyName, InstanceId, Status, Manufacturer
-    
+
     if ($espDevices) {
         $espDevices | Format-Table -AutoSize
         Write-Host "`nSUCCESS: ESP32 device detected!" -ForegroundColor Green

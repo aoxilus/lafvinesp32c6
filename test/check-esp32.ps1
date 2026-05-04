@@ -14,14 +14,14 @@ function Get-ESP32Devices {
     }
 
     Write-Host "`n[2] Checking USB Devices for ESP32-C6 (VID 303A or bootloader):" -ForegroundColor Green
-    $usbDevices = Get-PnpDevice | Where-Object { 
-        $_.InstanceId -like "*VID_303A*" -or 
-        $_.InstanceId -like "*ESP*" -or 
-        $_.FriendlyName -like "*ESP*" -or 
+    $usbDevices = Get-PnpDevice | Where-Object {
+        $_.InstanceId -like "*VID_303A*" -or
+        $_.InstanceId -like "*ESP*" -or
+        $_.FriendlyName -like "*ESP*" -or
         $_.FriendlyName -like "*Serial*" -or
         $_.InstanceId -like "*USB\VID_0000*"
     } | Select-Object FriendlyName, InstanceId, Status
-    
+
     if ($usbDevices) {
         $usbDevices | Format-Table -AutoSize -Wrap
     } else {
@@ -29,8 +29,8 @@ function Get-ESP32Devices {
     }
 
     Write-Host "`n[3] All USB Composite Devices (looking for new ones):" -ForegroundColor Green
-    Get-PnpDevice -Class USB | Where-Object { 
-        $_.FriendlyName -like "*Composite*" -or $_.FriendlyName -like "*Serial*" 
+    Get-PnpDevice -Class USB | Where-Object {
+        $_.FriendlyName -like "*Composite*" -or $_.FriendlyName -like "*Serial*"
     } | Select-Object FriendlyName, InstanceId | Format-Table -AutoSize -Wrap
 
     Write-Host "`n`nTip: Look for a new COM port (like COM5, COM6, COM16, etc.) or 'USB Serial Device'." -ForegroundColor Cyan

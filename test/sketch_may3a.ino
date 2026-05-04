@@ -1,14 +1,13 @@
 #include <LovyanGFX.hpp>
 #include <WiFi.h>
 
-// ================== PIN DEFINITIONS FOR YOUR BOARD ==================
+// Pin definitions for UeeKKoo ESP32-C6-1.47" LCD
 #define TFT_MOSI  6
 #define TFT_SCLK  7
 #define TFT_CS    14
 #define TFT_DC    15
 #define TFT_RST   21
 #define TFT_BL    22
-// ===================================================================
 
 class LGFX : public lgfx::LGFX_Device {
   lgfx::Panel_ST7789  _panel_instance;
@@ -44,7 +43,7 @@ public:
       cfg.offset_y = 0;
       cfg.offset_rotation = 0;
       cfg.dummy_read_pixel = 8;
-      cfg.dummy_read_bits  = 8;
+      cfg.dummy_read_bits  = 8;           // Fixed: was dummy_read_byte
       cfg.readable = true;
       cfg.invert = true;
       cfg.rgb_order = false;
@@ -60,56 +59,47 @@ LGFX tft;
 
 void setup() {
   Serial.begin(115200);
-  delay(500);
-  
-  // Turn on backlight
-  pinMode(TFT_BL, OUTPUT);
-  digitalWrite(TFT_BL, HIGH);
-  
+
   tft.init();
-  tft.setRotation(1);        // Try 0, 1, 2, 3 if the image is rotated
-  tft.setBrightness(200);
+  tft.setRotation(1);           // Try values 0,1,2,3 if screen is upside down or mirrored
+  tft.setBrightness(180);
   tft.fillScreen(TFT_BLACK);
-  
+
   tft.setTextSize(2);
   tft.setTextColor(TFT_CYAN);
-  tft.setCursor(20, 30);
+  tft.setCursor(15, 25);
   tft.println("WiFi Scanner");
-  
+
   tft.setTextSize(1);
   tft.setTextColor(TFT_WHITE);
-  tft.setCursor(20, 70);
-  tft.println("ESP32-C6 + 1.47\" LCD");
-  tft.println("SD Card Ready");
-  tft.println("Scanning networks...");
-  
+  tft.setCursor(15, 55);
+  tft.println("ESP32-C6 1.47\" LCD");
+  tft.println("Ready - Scanning...");
+
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
-  
-  Serial.println("\n=== SYSTEM READY ===");
-  Serial.println("LCD should now be showing text.");
-  Serial.println("WiFi scanning started.");
+  delay(1000);
+
+  Serial.println("LCD + WiFi Scanner initialized successfully!");
 }
 
 void loop() {
   tft.fillScreen(TFT_BLACK);
-  tft.setCursor(5, 10);
+  tft.setCursor(5, 8);
   tft.setTextColor(TFT_YELLOW);
-  tft.setTextSize(2);
-  tft.println(" Scanning...");
+  tft.println(" Scanning WiFi...");
 
   int n = WiFi.scanNetworks(false, true);
-  
+
   tft.setTextColor(TFT_CYAN);
-  tft.setTextSize(1);
-  tft.setCursor(5, 45);
+  tft.setCursor(5, 35);
   tft.printf("Found: %d networks\n\n", n);
 
-  for (int i = 0; i < min(n, 9); i++) {
-    tft.setCursor(5, 75 + i*18);
+  for (int i = 0; i < min(n, 8); i++) {
+    tft.setCursor(5, 65 + i*22);
     String ssid = WiFi.SSID(i);
-    if (ssid.length() > 15) ssid = ssid.substring(0,13) + "..";
-    
+    if (ssid.length() > 14) ssid = ssid.substring(0, 12) + "..";
+
     tft.setTextColor(TFT_GREEN);
     tft.print(ssid);
     tft.setTextColor(TFT_WHITE);
@@ -118,10 +108,10 @@ void loop() {
     tft.printf(" Ch%d", WiFi.channel(i));
   }
 
-  tft.setCursor(5, 270);
+  tft.setCursor(5, 265);
   tft.setTextColor(TFT_DARKGREY);
-  tft.println("Next scan in 8s");
+  tft.println("Next scan in 8 seconds");
 
-  Serial.printf("Scan complete - %d networks found\n", n);
+  Serial.printf("Scan #%d - Found %d networks\n", millis()/8000, n);
   delay(8000);
 }

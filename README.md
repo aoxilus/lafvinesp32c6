@@ -11,7 +11,7 @@ This repo is for the **LAFVIN / UeeKKoo ESP32-C6 1.47" LCD** board: game tests, 
 - 🎮 `arkanoid/arkanoid.ino`: the main Arduino sketch.
 - 🥑 `arkanoid/ARKANOID.md`: same code, easy to copy/paste.
 - 📡 `wifi-analyzer/`: PlatformIO experiment folder.
-- 🧪 root `*.ino`: quick hardware tests.
+- 🧪 `test/`: quick hardware tests and helper scripts.
 
 ### Arduino steps
 
@@ -45,7 +45,7 @@ This repo is for the **LAFVIN / UeeKKoo ESP32-C6 1.47" LCD** board: game tests, 
 - 🎮 `arkanoid/arkanoid.ino`: el sketch principal de Arduino.
 - 🥑 `arkanoid/ARKANOID.md`: el mismo código, fácil de copiar y pegar.
 - 📡 `wifi-analyzer/`: carpeta de experimentos con PlatformIO.
-- 🧪 `*.ino` en la raíz: pruebas rápidas de hardware.
+- 🧪 `test/`: pruebas rápidas de hardware y scripts auxiliares.
 
 ### Pasos en Arduino
 
@@ -77,10 +77,11 @@ This repo is for the **LAFVIN / UeeKKoo ESP32-C6 1.47" LCD** board: game tests, 
 
 - `ARKANOID.md` and `arkanoid.ino` contain the same source.
 - `wifi-analyzer/` uses PlatformIO. Build with `pio run`.
+- `test/` stores the diagnostic sketches and PowerShell helpers that were used to bring up the board.
 
 ## 📜 License
 
 This repo is shared under the **MIT License**.  
 Code should be easier to share than avocado should be to afford. 🥑
 
-Happy hacking / ¡A darle! 🎉
+Share and learn / Comparte y aprende 🎉
