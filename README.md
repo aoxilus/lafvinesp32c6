@@ -1,7 +1,7 @@
 # 🥑 lafvinesp32c6
 
 **ESP32-C6 + 1.47" ST7789 projects by [aoxilus](https://github.com/aoxilus)**  
-*In Mexico, avocado is luxury. So if we are spending luxury money, the pixels better line up.* 😄
+*In Mexico, avocado is luxury. So if we are spending luxury money, the pixels better line up.* 😄🥑👾
 
 This repo is for the **LAFVIN / UeeKKoo ESP32-C6 1.47" LCD** board: game tests, display experiments, and WiFi stuff.
 
@@ -27,6 +27,10 @@ This repo is for the **LAFVIN / UeeKKoo ESP32-C6 1.47" LCD** board: game tests, 
 
 - 👈 Hold **BOOT** = paddle goes left.
 - 👉 Release **BOOT** = paddle goes right.
+
+### Video
+
+- 📺 YouTube demo: [Watch here](https://www.youtube.com/watch?v=qAq44lFisYs)
 
 ### Display findings
 
@@ -62,6 +66,10 @@ This repo is for the **LAFVIN / UeeKKoo ESP32-C6 1.47" LCD** board: game tests, 
 - 👈 Mantén **BOOT** = la paleta va a la izquierda.
 - 👉 Suelta **BOOT** = la paleta va a la derecha.
 
+### Video
+
+- 📺 Demo en YouTube: [Ver aquí](https://www.youtube.com/watch?v=qAq44lFisYs)
+
 ### Hallazgos de la pantalla
 
 - 📏 La documentación oficial de LAFVIN apunta a **172x320** para esta pantalla: [tutorial Arduino](https://lafvin-esp32-c6-147lcd.readthedocs.io/en/latest/Tutorial/2.arduino.html).
@@ -84,4 +92,4 @@ This repo is for the **LAFVIN / UeeKKoo ESP32-C6 1.47" LCD** board: game tests, 
 This repo is shared under the **MIT License**.  
 Code should be easier to share than avocado should be to afford. 🥑
 
-Share and learn / Comparte y aprende 🎉
+Share and learn / Comparte y aprende 🎉🕹️👾
